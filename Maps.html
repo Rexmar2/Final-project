@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Map with Directions</title>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+ integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+<style>
+    #map { height: 800px; }
+    .popup-image { max-width: 500px; height: auto; object-fit: fill; }
+    h1{
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<h1>Police Station and Municipal Hall location</h1>
+<div id="map"></div>
+
+<script>
+function initMap(mapDataUrl) {
+    const map = L.map('map').setView([8.3603, 124.8684], 17);
+
+
+    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+    });
+    const satellite = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Tiles © Esri – Maxar, Earthstar Geographics, GIS User Community' }
+    );
+    osm.addTo(map);
+
+    
+    const markerGroups = {};
+    let routeControl = null;
+    let userLatLng = null;
+
+    
+    map.locate({ setView: true, maxZoom: 18 });
+    map.on("locationfound", (e) => {
+        userLatLng = e.latlng;
+        L.marker(userLatLng).addTo(map).bindPopup("You are here").openPopup();
+        L.circle(userLatLng, {
+            radius: e.accuracy,
+            color: "blue",
+            fillColor: "lightblue",
+            fillOpacity: 0.3
+        }).addTo(map);
+    });
+    map.on("locationerror", () => console.log("Location access denied."));
+
+    
+    fetch(mapDataUrl)
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(pin => {
+            const type = pin.locationType || "Other";
+            if (!markerGroups[type]) markerGroups[type] = L.layerGroup();
+
+            const marker = L.marker([pin.lat, pin.lng]).addTo(map);
+            const img = `<img src="${pin.img}" class="popup-image">`;
+            marker.bindPopup(`${img}<br><b>${pin.title}</b><br>${pin.description}<br><i>${pin.locationType}</i>`);
+
+            marker.on("click", () => {
+                if (!userLatLng) {
+                    alert("User location not found yet.");
+                    return;
+                }
+
+                if (routeControl) map.removeControl(routeControl);
+
+                routeControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(userLatLng.lat, userLatLng.lng),
+                        L.latLng(pin.lat, pin.lng)
+                    ],
+                    routeWhileDragging: false,
+                    addWaypoints: false,
+                    show: false 
+                }).addTo(map);
+
+                
+                routeControl.on('routesfound', function(e) {
+                    const routes = e.routes;
+                    const summary = routes[0].summary;
+                    const km = (summary.totalDistance / 1000).toFixed(2);
+                    const mins = Math.round(summary.totalTime / 60);
+                    marker.bindPopup(`${img}<br><b>${pin.title}</b><br>${pin.description}<br><i>${pin.locationType}</i><br><b>Distance:</b> ${km} km, <b>Time:</b> ${mins} mins`).openPopup();
+                });
+            });
+
+            markerGroups[type].addLayer(marker);
+        });
+
+        Object.values(markerGroups).forEach(g => g.addTo(map));
+
+       
+        const baseMaps = { "OpenStreetMap": osm, "Satellite": satellite };
+        const overlayMaps = {};
+        Object.keys(markerGroups).forEach(type => overlayMaps[type] = markerGroups[type]);
+        L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+    })
+    .catch(err => console.error("Error loading JSON:", err));
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    initMap("PoliceStationMap.json");
+});
+</script>
+</body>
+</html>

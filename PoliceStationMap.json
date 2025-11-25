@@ -1,0 +1,31 @@
+[
+    {
+        "name":"Police Station",
+        "title":"Police Station",
+        "description":"Manolo Fortich Police Station",
+        "img":"https://i.pinimg.com/originals/69/f3/06/69f30621a0729b0d546a19532c09c72a.gif",
+        "lat":8.369720719504585, 
+        "lng":124.8680911534003,
+        "locationType":"Police Station"
+    },
+    {
+        "name":"Municipal Hall",
+        "title":"Municipal Hall",
+        "description":"Manolo Fortich Municipal Hall",
+        "img":"https://cdomassage.wordpress.com/wp-content/uploads/2025/08/5318b-manolo-fortich.png?w=1024&h=640",
+        "lat":8.371725939629071, 
+        "lng":124.8564886711188,
+        "locationType":"Government Office"
+    },
+    {
+        "name":"Beaureau of Fire Protection",
+        "title":"Beaureau of Fire Protection",
+        "description": "Manolo Fortich Fire Station",
+        "img": "https://www.web.manolofortich.gov.ph/storage/gallery/57c050a1380902446e927fd00e8da3c9.jpg",
+        "lat": 8.369572524864676, 
+        "lng": 124.86783912950415,
+        "locationType":"Bureau of Fire Protection Office"
+    }
+   
+   
+]
