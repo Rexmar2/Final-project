@@ -3,58 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Police Station Locator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #0a1a2b;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #1e90ff;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0d6efd;
+        }
+    </style>
 </head>
-<style>
-    body {
-        background-image: url("https://cdn.vectorstock.com/i/1000v/91/84/police-station-city-department-exterior-vector-46689184.avif");
-        padding: 0;
-        margin: 0;
-        }
-    footer {
-         background-color: rgb(1, 1, 1);
-         margin-top: 6%;
-         padding: 44px;
-         text-align: center;
-         color: white;
-        }
-    button{
-         border-radius: 20px; 
-         cursor: pointer;
-        }
-     h1{
-        text-align: center;
-        font-size: xx-large;
-        background-color: black;
-        padding: 44px;
-        margin-top: 0;
-        color: white;
-        }
-    p {
-        text-align: center;
-        margin-top: 40px;
-        font-size: x-large;
-        color: rgb(0, 0, 0);
-       
-    }
-    div{
-        text-align: center;
-        margin-top: 25%;
-    }
-</style>
 <body>
-      <h1>Police Station Locator</h1>
+
+    <div class="container">
+        <h1>Police Station Locator</h1>
         <p>
-           “The <strong>Police Station Locator</strong> is designed to improve public safety by providing quick and reliable access to police stations across your area. Using location-based services, it identifies the nearest station and provides essential information such as distance, directions, and contact details. Whether you're dealing with an emergency, reporting an incident, or simply need guidance, this locator ensures that help is always within reach.”
+            Find the nearest police station quickly and easily.  
+            Our tool uses your location to guide you to the closest station,  
+            ensuring safety and fast response in emergency situations.
         </p>
-        <div>
-            <button style="padding:15px 30px; font-size:20px;" onclick="window.location.href='Maps.html'" >My Location</button>
-        </div>
-       <footer>  
-            “Safety Starts with Knowing Where to Go.”
-            <br>
-            <button onclick="window.location.href='aboutus.html'">About Us</button>  
-       </footer>
+
+        <a href="Maps.html" class="btn">Explore</a>
+        <a href="aboutus.html" class="btn">About Us</a>
+    </div>
 
 </body>
 </html>
