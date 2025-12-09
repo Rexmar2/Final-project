@@ -25,6 +25,15 @@
         "lat": 8.369572524864676, 
         "lng": 124.86783912950415,
         "locationType":"Bureau of Fire Protection Office"
+    },
+    {
+        "name":"Police Station",
+        "title":"Police Station",
+        "description": "Sumilao Police Station",
+        "img": "https://lalibertad.gov.ph/wp-content/uploads/2021/08/police_station-768x432.jpg",
+        "lat": 8.327799756460534,
+        "lng":  124.97832935808793,
+        "locationType":"Police Station"
     }
    
    
