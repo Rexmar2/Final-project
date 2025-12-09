@@ -5,14 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Police Stations with Directions</title>
 
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
@@ -20,20 +17,35 @@
 <style>
     #map { height: 800px; }
     .popup-image { max-width: 500px; height: auto; object-fit: fill; }
-    h1{
-        text-align: center;
+    h1 { text-align: center; }
+
+    /* Back button style */
+    .back-btn {
+        display: inline-block;
+        margin: 20px;
+        padding: 10px 20px;
+        background-color: #333;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .back-btn:hover {
+        background-color: #555;
     }
 </style>
 </head>
 <body>
-<h1>Police Station and Municipal Hall location</h1>
+
+<!-- ✅ BACK BUTTON -->
+<a href="index.html" class="back-btn">⟵ Back to Home</a>
+
+<h1>Police Station and Municipal Hall Location</h1>
 <div id="map"></div>
 
 <script>
-    
 function initMap(mapDataUrl) {
     const map = L.map('map').setView([8.3603, 124.8684], 17);
-
 
     const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
@@ -44,12 +56,10 @@ function initMap(mapDataUrl) {
     );
     osm.addTo(map);
 
-    
     const markerGroups = {};
     let routeControl = null;
     let userLatLng = null;
 
-    
     map.locate({ setView: true, maxZoom: 18 });
     map.on("locationfound", (e) => {
         userLatLng = e.latlng;
@@ -63,7 +73,6 @@ function initMap(mapDataUrl) {
     });
     map.on("locationerror", () => console.log("Location access denied."));
 
-    
     fetch(mapDataUrl)
     .then(res => res.json())
     .then(data => {
@@ -93,7 +102,6 @@ function initMap(mapDataUrl) {
                     show: false 
                 }).addTo(map);
 
-                
                 routeControl.on('routesfound', function(e) {
                     const routes = e.routes;
                     const summary = routes[0].summary;
@@ -108,7 +116,6 @@ function initMap(mapDataUrl) {
 
         Object.values(markerGroups).forEach(g => g.addTo(map));
 
-       
         const baseMaps = { "OpenStreetMap": osm, "Satellite": satellite };
         const overlayMaps = {};
         Object.keys(markerGroups).forEach(type => overlayMaps[type] = markerGroups[type]);
@@ -117,10 +124,10 @@ function initMap(mapDataUrl) {
     .catch(err => console.error("Error loading JSON:", err));
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
     initMap("PoliceStationMap.json");
 });
 </script>
+
 </body>
 </html>
